@@ -8908,9 +8908,16 @@ fieldset:disabled .btn {
 }
 
 .bg-dark {
-  --bs-bg-opacity: 0.92;
-  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  --bs-bg-opacity: 1;
+  background: linear-gradient(217deg, rgba(243, 63, 171,1), rgba(255,0,0,0) 20.71%),
+  linear-gradient(127deg, rgba(255, 0, 0,1), rgba(0,255,0,0) 90.71%),
+  linear-gradient(336deg, rgba(163, 162, 162, 1), rgba(0,0,255,0) 75.71%) !important;
 }
+
+/* .bg-dark {
+  --bs-bg-opacity: 0.92;
+  background-image: linear-gradient(to right, rgb(255, 0, 0) 0%,rgb(255, 0, 0) 85%, rgb(243, 63, 171) 85%,rgb(243, 63, 171) 100%) !important;
+} */
 
 .bg-black {
   --bs-bg-opacity: 1;
