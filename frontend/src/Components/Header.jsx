@@ -1,5 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { Badge, Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import {
+  Badge,
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  Image,
+} from "react-bootstrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -47,6 +54,16 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
+              {userInfo && (
+                <Nav.Item>
+                  <Image
+                    className="my-2"
+                    src={userInfo.image}
+                    roundedCircle={true}
+                    style={{ height: "55px", width: "55px" }}
+                  />
+                </Nav.Item>
+              )}
               <Nav.Item>
                 {userInfo ? (
                   <NavDropdown title={`שלום ${userInfo.name}`} id="username">
@@ -71,12 +88,6 @@ const Header = () => {
                   <NavDropdown title="ניהול" id="adminmenu">
                     <LinkContainer to="/admin/userlist">
                       <NavDropdown.Item>משתמשים</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/admin/productlist">
-                      <NavDropdown.Item>מוצרים</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/admin/orderlist">
-                      <NavDropdown.Item>הזמנות</NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
                 </Nav.Item>

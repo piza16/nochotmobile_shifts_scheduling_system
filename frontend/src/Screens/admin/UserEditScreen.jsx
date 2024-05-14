@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Image } from "react-bootstrap";
 import Message from "../../Components/Message";
 import Loader from "../../Components/Loader";
 import FormContainer from "../../Components/FormContainer";
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import {
   useGetUserDetailsQuery,
   useUpdateUserMutation,
+  useUploadUserProfileImageMutation,
 } from "../../slices/usersApiSlice";
 import Meta from "../../Components/Meta";
 
@@ -16,6 +17,9 @@ const UserEditScreen = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [image, setImage] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
   const {
@@ -27,6 +31,9 @@ const UserEditScreen = () => {
 
   const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation();
 
+  const [uploadUserProfileImage, { isLoading: loadingUpload }] =
+    useUploadUserProfileImageMutation();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,21 +41,54 @@ const UserEditScreen = () => {
       setName(user.name);
       setEmail(user.email);
       setIsAdmin(user.isAdmin);
+      setImage(user.image);
     }
   }, [user]);
 
   const updateUserHandler = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("עימות סיסמא נכשל - הסיסמאות לא זהות", {
+        toastId: "toastError1",
+      });
+    } else {
+      try {
+        const res = await updateUser({
+          userId,
+          name,
+          email,
+          isAdmin,
+          password,
+          image,
+        });
+        if (res.error) throw res.error;
+        toast.success("המשתמש עודכן בהצלחה", {
+          toastId: "toastSuccess2",
+        });
+        refetch();
+        navigate("/admin/userlist");
+      } catch (err) {
+        toast.error(err?.data?.message || err?.error || "שגיאה בעדכון משתמש", {
+          toastId: "toastError2",
+        });
+      }
+    }
+  };
+
+  const uploadFileHandler = async (e) => {
+    const fileInput = e.target;
+    const formData = new FormData();
+    formData.append("image", fileInput.files[0]);
     try {
-      const res = await updateUser({ userId, name, email, isAdmin });
-      if (res.error) throw res.error;
-      toast.success("המשתמש עודכן בהצלחה", {
+      const res = await uploadUserProfileImage(formData).unwrap();
+      toast.success("התמונה הועלתה בהצלחה", {
         toastId: "toastSuccess1",
       });
-      refetch();
-      navigate("/admin/userlist");
+      console.log(res.image);
+      setImage(res.image);
     } catch (err) {
-      toast.error(err?.data?.message || err?.error || "שגיאה בעדכון משתמש", {
+      fileInput.value = "";
+      toast.error(err?.data?.message || err?.error || "שגיאה בהעלאת תמונה", {
         toastId: "toastError1",
       });
     }
@@ -56,7 +96,7 @@ const UserEditScreen = () => {
 
   return (
     <>
-      <Meta title={"עריכת משתמש | Jobify"} />
+      <Meta title={"עריכת משתמש | NOC Shift"} />
       <Link to="/admin/userlist" className="btn btn-light my-3">
         חזרה למשתמשים
       </Link>
@@ -70,6 +110,11 @@ const UserEditScreen = () => {
           <Message variant="danger">{error}</Message>
         ) : (
           <>
+            <Image
+              src={image}
+              roundedCircle={true}
+              style={{ height: "100px", width: "100px" }}
+            />
             <Form onSubmit={updateUserHandler}>
               <Form.Group controlId="name" className="my-2">
                 <Form.Label>שם מלא של המשתמש</Form.Label>
@@ -90,7 +135,39 @@ const UserEditScreen = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-
+              <Form.Group controlId="image" className="my-2">
+                <Form.Label>תמונת פרופיל</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="בצע העלאת תמונה"
+                  value={image}
+                  onChange={(e) => setImage}
+                ></Form.Control>
+                <Form.Control
+                  type="file"
+                  Label="בחר קובץ"
+                  onChange={uploadFileHandler}
+                ></Form.Control>
+                {loadingUpload && <Loader />}
+              </Form.Group>
+              <Form.Group controlId="password" className="my-2">
+                <Form.Label>סיסמא</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="הכנס סיסמא"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="confirmPassword" className="my-2">
+                <Form.Label>עימות סיסמא</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="הכנס סיסמא שוב"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
               <Form.Group controlId="isAdmin" className="my-2">
                 <Form.Check
                   type="checkbox"
