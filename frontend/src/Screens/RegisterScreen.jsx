@@ -54,7 +54,7 @@ const RegisterScreen = () => {
 
   return (
     <>
-      <Meta title={"הרשמה | Jobify"} />
+      <Meta title={"הרשמה | NOC Shift"} />
       <FormContainer>
         <h1 className="mt-5">הרשמה</h1>
 

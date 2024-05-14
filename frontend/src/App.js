@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
+import Meta from "./Components/Meta";
 import videoBg from "./Assets/bgVideo.mp4";
 import { useEffect, useRef } from "react";
 
@@ -19,6 +20,11 @@ const App = () => {
 
   return (
     <>
+      <Meta
+        title={Meta.title}
+        description={Meta.description}
+        keyword={Meta.keyword}
+      />
       <video
         src={videoBg}
         ref={videoRef}

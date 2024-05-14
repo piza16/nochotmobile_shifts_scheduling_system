@@ -45,7 +45,7 @@ const LoginScreen = () => {
 
   return (
     <>
-      <Meta title={"התחברות | Jobify"} />
+      <Meta title={"כניסה | NOC Shift"} />
       <FormContainer>
         <h1 className="mt-5">כניסת משתמש</h1>
 

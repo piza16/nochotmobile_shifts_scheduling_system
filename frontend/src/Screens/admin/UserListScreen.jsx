@@ -33,7 +33,7 @@ const UserListScreen = () => {
 
   return (
     <>
-      <Meta title={"רשימת כל המשתמשים | Jobify"} />
+      <Meta title={"כל המשתמשים | NOC Shift"} />
       <h1>משתמשים</h1>
       {loadingDelete && <Loader />}
       {isLoading ? (
