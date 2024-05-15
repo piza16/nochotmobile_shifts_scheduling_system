@@ -18,6 +18,7 @@ const authUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       image: user.image,
+      isActive: user.isActive,
     });
   } else {
     res.status(401);
@@ -49,6 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       image: user.image,
+      isActive: user.isActive,
     });
   } else {
     res.status(400);
@@ -161,8 +163,9 @@ const updateUser = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
-    user.isAdmin = Boolean(req.body.isAdmin);
+    user.isAdmin = Boolean(req.body.isAdmin || user.isAdmin);
     user.image = req.body.image || user.image;
+    user.isActive = Boolean(req.body.isActive || user.isActive);
 
     if (req.body.password) {
       user.password = req.body.password;

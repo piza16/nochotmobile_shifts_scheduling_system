@@ -88,75 +88,81 @@ const ProfileScreen = () => {
 
   return (
     <>
-      <Row>
-        <Meta title={"פרופיל משתמש | NOC shift"} />
-        <Col md={3}>
-          <h2>פרופיל משתמש</h2>
-          <Image
-            src={image}
-            roundedCircle={true}
-            style={{ height: "100px", width: "100px" }}
-          />
-          <Form onSubmit={updateUserProfileHandler}>
-            <Form.Group controlId="name" className="my-2">
-              <Form.Label>שם מלא</Form.Label>
-              <Form.Control
-                type="name"
-                disabled={true}
-                placeholder="הכנס שם"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="name" className="my-2">
-              <Form.Label>כתובת דוא"ל</Form.Label>
-              <Form.Control
-                type="email"
-                disabled={true}
-                placeholder={`הכנס דוא"ל`}
-                value={email}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="image" className="my-2">
-              <Form.Label>תמונת פרופיל</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="בצע העלאת תמונה"
-                value={image}
-                onChange={(e) => setImage}
-              ></Form.Control>
-              <Form.Control
-                type="file"
-                Label="בחר קובץ"
-                onChange={uploadFileHandler}
-              ></Form.Control>
-              {loadingUpload && <Loader />}
-            </Form.Group>
-            <Form.Group controlId="password" className="my-2">
-              <Form.Label>סיסמא</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="הכנס סיסמא"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="confirmPassword" className="my-2">
-              <Form.Label>עימות סיסמא</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="הכנס סיסמא שוב"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Button type="submit" variant="primary" className="my-2">
-              עדכון פרופיל >
-            </Button>
-            {loadingUpdateProfile && <Loader />}
-          </Form>
-        </Col>
-      </Row>
+      {!userInfo.isActive ? (
+        <Message>אנא בקש ממנהל הבקרה לאשר אותך</Message>
+      ) : (
+        <>
+          <Row>
+            <Meta title={"פרופיל משתמש | NOC shift"} />
+            <Col md={3}>
+              <h2>פרופיל משתמש</h2>
+              <Image
+                src={image}
+                roundedCircle={true}
+                style={{ height: "100px", width: "100px" }}
+              />
+              <Form onSubmit={updateUserProfileHandler}>
+                <Form.Group controlId="name" className="my-2">
+                  <Form.Label>שם מלא</Form.Label>
+                  <Form.Control
+                    type="name"
+                    disabled={true}
+                    placeholder="הכנס שם"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+                <Form.Group controlId="name" className="my-2">
+                  <Form.Label>כתובת דוא"ל</Form.Label>
+                  <Form.Control
+                    type="email"
+                    disabled={true}
+                    placeholder={`הכנס דוא"ל`}
+                    value={email}
+                  ></Form.Control>
+                </Form.Group>
+                <Form.Group controlId="image" className="my-2">
+                  <Form.Label>תמונת פרופיל</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="בצע העלאת תמונה"
+                    value={image}
+                    onChange={(e) => setImage}
+                  ></Form.Control>
+                  <Form.Control
+                    type="file"
+                    Label="בחר קובץ"
+                    onChange={uploadFileHandler}
+                  ></Form.Control>
+                  {loadingUpload && <Loader />}
+                </Form.Group>
+                <Form.Group controlId="password" className="my-2">
+                  <Form.Label>סיסמא</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="הכנס סיסמא"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+                <Form.Group controlId="confirmPassword" className="my-2">
+                  <Form.Label>עימות סיסמא</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="הכנס סיסמא שוב"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+                <Button type="submit" variant="primary" className="my-2">
+                  עדכון פרופיל >
+                </Button>
+                {loadingUpdateProfile && <Loader />}
+              </Form>
+            </Col>
+          </Row>
+        </>
+      )}
     </>
   );
 };

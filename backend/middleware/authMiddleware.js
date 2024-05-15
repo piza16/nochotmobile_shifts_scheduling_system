@@ -10,18 +10,21 @@ const protect = asyncHandler(async (req, res, next) => {
   token = req.cookies.jwt;
 
   if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.userId).select("-password");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.userId).select("-password");
+    if (req.user && req.user.isActive) {
       next();
-    } catch (error) {
-      console.log(error);
+    } else if (!req.user) {
       res.status(401);
-      throw new Error("Not authorized, token failed");
+      throw new Error("לא רשאי, טוקן לא תקין");
+    } else {
+      // !req.user.isActive
+      res.status(401);
+      throw new Error("לא רשאי, המשתמש לא פעיל");
     }
   } else {
     res.status(401);
-    throw new Error("Not authorized, no token");
+    throw new Error("לא רשאי, אין טוקן");
   }
 });
 
@@ -31,7 +34,7 @@ const admin = (req, res, next) => {
     next();
   } else {
     res.status(401);
-    throw new Error("Not authorized, as admin");
+    throw new Error("לא מאושר כמנהל");
   }
 };
 

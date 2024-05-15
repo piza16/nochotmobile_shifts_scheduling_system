@@ -41,6 +41,21 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    canBeScheduled: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    canSendConstraints: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     image: {
       type: String,
       required: true,
