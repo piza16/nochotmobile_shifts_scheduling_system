@@ -7,7 +7,6 @@ import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import userRoutes from "./routes/userRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
-//import sendEmailRoutes from "./routes/sendEmailRoutes.js";
 
 const port = process.env.PORT || 5000;
 
@@ -24,7 +23,6 @@ app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
 app.use("/api/upload", uploadRoutes);
-//app.use("/api/send-email", sendEmailRoutes);
 
 const __dirname = path.resolve(); // Set __dirname to the absolute path of the project folder
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

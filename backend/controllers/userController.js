@@ -1,6 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import generateToken from "../utils/generateToken.js";
-import { sendEmailToAdmins } from "../utils/sendEmails.js";
+import { sendEmailsHandler } from "../utils/sendEmails.js";
 import User from "../models/userModel.js";
 
 // @desc    Auth user & get token
@@ -43,8 +43,12 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({ name, email, password });
 
   if (user) {
+    const allAdminsEmails = await User.find({ isAdmin: true }).select("email");
+    allAdminsEmails.forEach((admin) => {
+      sendEmailsHandler(res, admin.email, user.name, user.email, true);
+    });
+
     generateToken(res, user._id);
-    sendEmailToAdmins("rotempizanti1@gmail.com", user.name);
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -171,8 +175,12 @@ const updateUser = asyncHandler(async (req, res) => {
     if (req.body.password) {
       user.password = req.body.password;
     }
-
     const updatedUser = await user.save();
+
+    if (req.body.isActive) {
+      sendEmailsHandler(res, updatedUser.email, updatedUser.name, "", false);
+    }
+
     res.status(200).json({
       _id: updatedUser._id,
       name: updatedUser.name,
