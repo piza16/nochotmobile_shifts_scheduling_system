@@ -88,13 +88,13 @@ const ProfileScreen = () => {
 
   return (
     <>
+      <Meta title={"פרופיל משתמש | NOC shift"} />
       {!userInfo.isActive ? (
         <Message>אנא בקש ממנהל הבקרה לאשר אותך</Message>
       ) : (
         <>
           <Row>
-            <Meta title={"פרופיל משתמש | NOC shift"} />
-            <Col md={3}>
+            <Col xs={12} sm={10} md={8} lg={6} xl={4}>
               <h2>פרופיל משתמש</h2>
               <Image
                 src={image}

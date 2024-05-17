@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import generateToken from "../utils/generateToken.js";
+import { sendEmailToAdmins } from "../utils/sendEmails.js";
 import User from "../models/userModel.js";
 
 // @desc    Auth user & get token
@@ -43,7 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (user) {
     generateToken(res, user._id);
-
+    sendEmailToAdmins("rotempizanti1@gmail.com", user.name);
     res.status(201).json({
       _id: user._id,
       name: user.name,

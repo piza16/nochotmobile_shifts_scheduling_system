@@ -7,8 +7,10 @@ const Footer = () => {
     <footer>
       <Container>
         <Row>
-          <Col className="text-center py-3">
-            <p>HOTmobile NOC Shifts &copy; {currentYear}</p>
+          <Col className="text-center py-4">
+            <p style={{ marginBottom: "0px" }}>
+              HOTmobile NOC Shifts &copy; {currentYear}
+            </p>
           </Col>
         </Row>
       </Container>

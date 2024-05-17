@@ -17,14 +17,14 @@ main {
   min-height: 75vh;
   width: 100%;
   position: absolute;
-  top: 16%;
+  top: 7rem;
   z-index: 1;
 }
 
 footer {
   width: 100%;
   position: absolute;
-  bottom: -9rex;
+  bottom: -2.8rem;
   z-index: 2;
 }
 
