@@ -6,7 +6,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -22,17 +21,32 @@ import RegisterScreen from "./Screens/RegisterScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
 import UserListScreen from "./Screens/admin/UserListScreen";
 import UserEditScreen from "./Screens/admin/UserEditScreen";
+import AdminHomeScreen from "./Screens/admin/AdminHomeScreen";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+    // <Route path="/" element={<App />}>
+    //   <Route index={true} path="/login" element={<LoginScreen />} />
+    //   <Route path="/register" element={<RegisterScreen />} />
+    //   <Route path="" element={<PrivateRoute />}>
+    //     <Route path="/" element={<HomeScreen />} />
+    //     <Route path="/profile" element={<ProfileScreen />} />
+    //   </Route>
+    //   <Route path="" element={<AdminRoute />}>
+    //     <Route path="/" element={<AdminHomeScreen />} />
+    //     <Route path="/admin/userlist" element={<UserListScreen />} />
+    //     <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+    //   </Route>
+    // </Route>
     <Route path="/" element={<App />}>
-      <Route index={true} path="/login" element={<LoginScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
-      <Route path="" element={<PrivateRoute />}>
+      <Route element={<PrivateRoute />}>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
       </Route>
-      <Route path="" element={<AdminRoute />}>
+      <Route element={<AdminRoute />}>
+        <Route path="/admin" element={<AdminHomeScreen />} />
         <Route path="/admin/userlist" element={<UserListScreen />} />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
       </Route>
@@ -45,9 +59,7 @@ root.render(
   <React.StrictMode>
     <HelmetProvider>
       <Provider store={store}>
-        <PayPalScriptProvider deferLoading={true}>
-          <RouterProvider router={router} />
-        </PayPalScriptProvider>
+        <RouterProvider router={router} />
       </Provider>
     </HelmetProvider>
   </React.StrictMode>
