@@ -46,8 +46,8 @@ const Header = () => {
             <Navbar.Brand>
               <img
                 src={logo}
-                alt="NOC shifts HOTmobile"
-                style={{ maxHeight: "110px", maxWidth: "230px" }}
+                alt="NOC shifts"
+                style={{ width: "160px", height: "90px" }}
               />
             </Navbar.Brand>
           </LinkContainer>

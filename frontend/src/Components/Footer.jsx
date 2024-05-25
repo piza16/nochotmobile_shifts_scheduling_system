@@ -9,7 +9,7 @@ const Footer = () => {
         <Row>
           <Col className="text-center py-4">
             <p style={{ marginBottom: "0px" }}>
-              HOTmobile NOC Shifts &copy; {currentYear}
+              NOC Shifts By Rotem Pizanti &copy; {currentYear}
             </p>
           </Col>
         </Row>
