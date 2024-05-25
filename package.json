@@ -1,7 +1,7 @@
 {
-  "name": "nochotmobile_shifts_scheduling_system",
+  "name": "shifts_scheduling_system",
   "version": "1.0.0",
-  "description": "Shifts scheduling system for HOTmobile NOC",
+  "description": "Shifts scheduling system",
   "type": "module",
   "main": "server.js",
   "scripts": {
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/piza16/nochotmobile_shifts_scheduling_system.git"
+    "url": "git+https://github.com/piza16/shifts_scheduling_system.git"
   },
   "author": "Rotem Pizanti",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/piza16/nochotmobile_shifts_scheduling_system/issues"
+    "url": "https://github.com/piza16/shifts_scheduling_system/issues"
   },
-  "homepage": "https://github.com/piza16/nochotmobile_shifts_scheduling_system#readme",
+  "homepage": "https://github.com/piza16/shifts_scheduling_system#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
