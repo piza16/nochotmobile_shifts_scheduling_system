@@ -17,15 +17,15 @@ main {
   min-height: 75vh;
   width: 100%;
   position: absolute;
-  top: 7rem;
-  z-index: 1;
+  top: 8.2rem;
+  z-index: 2;
 }
 
 footer {
   width: 100%;
   position: absolute;
   bottom: -2.8rem;
-  z-index: 2;
+  z-index: 1;
 }
 
 
@@ -85,6 +85,33 @@ table th {
   background: rgba(0, 0, 0, 0.5);
 }
 
+.table-cell-flex {
+  display: flex;
+  flex-direction: column;
+  height: 177px;
+}
+
+.table-cell-flex > span {
+  flex: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-cell-flex > div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.FaCheckAndTimes {
+  background-color: white;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 @media only screen and (max-width: 480px) {
   .tc{
