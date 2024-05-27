@@ -22,7 +22,7 @@ const getEmployeeWeeklyConstraint = asyncHandler(async (req, res) => {
 // @access  Admin
 const getAllEmployeesWeeklyConstraint = asyncHandler(async (req, res) => {
   const { firstDayOfWeekDate } = req.query; // Expecting the date to be passed as a query parameter
-  console.log(firstDayOfWeekDate);
+  //console.log(firstDayOfWeekDate);
   const firstDay = new Date(firstDayOfWeekDate);
   firstDay.setHours(0, 0, 0, 0); // Reset to midnight to match only the date part
   const constraints = await Constraint.find({
@@ -33,7 +33,7 @@ const getAllEmployeesWeeklyConstraint = asyncHandler(async (req, res) => {
       },
     },
   });
-  console.log(constraints);
+  //console.log(constraints);
   res.status(200).json(constraints);
 });
 

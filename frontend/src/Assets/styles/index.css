@@ -113,6 +113,14 @@ table th {
   justify-content: center;
 }
 
+.weeksPaging {
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content:start;
+  margin-bottom: 20px;
+}
+
 @media only screen and (max-width: 480px) {
   .tc{
     right: 0% !important;

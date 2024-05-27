@@ -1,21 +1,39 @@
 import { useEffect, useState } from "react";
 import { useGetAllEmployeesWeeklyConstraintsQuery } from "../slices/constraintsApiSlice";
 import { getNextWeekStart } from "../utils/nextWeekSunday";
-import { Table, Row, Col, Card, Image, Container } from "react-bootstrap";
+import {
+  Table,
+  Row,
+  Col,
+  Card,
+  Image,
+  Container,
+  Button,
+} from "react-bootstrap";
 import { useGetUsersQuery } from "../slices/usersApiSlice";
 import { FaTimes, FaCheck } from "react-icons/fa";
+import { FaAnglesRight, FaAnglesLeft } from "react-icons/fa6";
 import Loader from "./Loader";
 import Message from "./Message";
 
 const WeeklyConstraints = () => {
-  const [nextSunday, setNextSunday] = useState(getNextWeekStart());
+  const initialSunday = getNextWeekStart();
+  const [sunday, setSunday] = useState(initialSunday);
+
+  const [sundayHeaderDate, setSundayHeaderDate] = useState(
+    new Date(initialSunday)
+  );
+  const [saturdayHeaderDate, setSaturdayHeaderDate] = useState(
+    new Date(initialSunday).setDate(new Date(initialSunday).getDate() + 6)
+  );
 
   const {
     data: constraints,
     isLoading: isLoadingConstraints,
     isError: isErrorConstraints,
     error: errorConstraints,
-  } = useGetAllEmployeesWeeklyConstraintsQuery(nextSunday);
+    refetch: refetchConstraints,
+  } = useGetAllEmployeesWeeklyConstraintsQuery(sunday);
 
   const {
     data: users,
@@ -25,21 +43,104 @@ const WeeklyConstraints = () => {
   } = useGetUsersQuery();
 
   useEffect(() => {
-    // Update next Sunday whenever necessary
-    //setNextSunday(getNextWeekStart());
-  }, []);
+    refetchConstraints();
+  }, [sunday, refetchConstraints]);
+
+  const previousWeekHandler = () => {
+    const newSundayHeaderDate = new Date(sundayHeaderDate);
+    newSundayHeaderDate.setDate(newSundayHeaderDate.getDate() - 7);
+    setSundayHeaderDate(newSundayHeaderDate);
+
+    const newSaturdayHeaderDate = new Date(saturdayHeaderDate);
+    newSaturdayHeaderDate.setDate(newSaturdayHeaderDate.getDate() - 7);
+    setSaturdayHeaderDate(newSaturdayHeaderDate);
+
+    const currentDate = new Date(sunday);
+    const previousSunday = new Date(currentDate);
+    previousSunday.setDate(currentDate.getDate() - 7);
+    setSunday(previousSunday.toISOString());
+  };
+
+  const nextWeekHandler = () => {
+    const newSundayHeaderDate = new Date(sundayHeaderDate);
+    newSundayHeaderDate.setDate(newSundayHeaderDate.getDate() + 7);
+    setSundayHeaderDate(newSundayHeaderDate);
+
+    const newSaturdayHeaderDate = new Date(saturdayHeaderDate);
+    newSaturdayHeaderDate.setDate(newSaturdayHeaderDate.getDate() + 7);
+    setSaturdayHeaderDate(newSaturdayHeaderDate);
+
+    const currentDate = new Date(sunday);
+    const previousSunday = new Date(currentDate);
+    previousSunday.setDate(currentDate.getDate() + 7);
+    setSunday(previousSunday.toISOString());
+  };
 
   const findUserById = (id) => users?.find((user) => user._id === id);
 
   return (
     <Container>
-      <h3>אילוצים של שבוע הבא</h3>
+      {sunday === initialSunday ? (
+        <div className="weeksPaging">
+          <Button
+            title="שבוע קודם"
+            style={{ padding: "3px" }}
+            onClick={previousWeekHandler}
+          >
+            <FaAnglesRight
+              style={{ width: "25px", strokeWidth: "5px", height: "25px" }}
+            />
+          </Button>
+          <h3 className="mb-1 mx-2">אילוצים של שבוע הבא</h3>
+        </div>
+      ) : (
+        <div className="weeksPaging">
+          {isLoadingConstraints ? (
+            <Loader />
+          ) : !constraints || constraints.length === 0 ? (
+            <h3 className="mb-1 mx-2">
+              {sundayHeaderDate.toLocaleDateString() +
+                " - " +
+                saturdayHeaderDate.toLocaleDateString()}
+            </h3>
+          ) : (
+            <>
+              <Button
+                title="שבוע קודם"
+                style={{ padding: "3px" }}
+                onClick={previousWeekHandler}
+              >
+                <FaAnglesRight
+                  style={{ width: "25px", strokeWidth: "5px", height: "25px" }}
+                />
+              </Button>
+
+              <h3 className="mb-1 mx-2">
+                {sundayHeaderDate.toLocaleDateString() +
+                  " - " +
+                  saturdayHeaderDate.toLocaleDateString()}
+              </h3>
+            </>
+          )}
+          <Button
+            title="שבוע הבא"
+            style={{ padding: "3px" }}
+            onClick={nextWeekHandler}
+          >
+            <FaAnglesLeft
+              style={{ width: "25px", strokeWidth: "5px", height: "25px" }}
+            />
+          </Button>
+        </div>
+      )}
       {isLoadingConstraints || isLoadingUsers ? (
         <Loader />
       ) : isErrorConstraints ? (
         <Message variant="danger">{errorConstraints}</Message>
       ) : isErrorUsers ? (
         <Message variant="danger">{errorUsers}</Message>
+      ) : !constraints || constraints.length === 0 ? (
+        <Message variant="danger">אין אילוצים להצגה עבור תאריכים אלו</Message>
       ) : (
         <Table striped bordered hover responsive className="table-sm">
           <thead>
@@ -53,8 +154,6 @@ const WeeklyConstraints = () => {
           <tbody>
             {constraints.map((constraint) => {
               const user = findUserById(constraint.employeeId);
-              console.log(user);
-              console.log(constraint);
               return (
                 <tr key={constraint._id}>
                   <td style={{ width: "20%" }}>
