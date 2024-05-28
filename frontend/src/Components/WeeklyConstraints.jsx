@@ -27,6 +27,9 @@ const WeeklyConstraints = () => {
     new Date(initialSunday).setDate(new Date(initialSunday).getDate() + 6)
   );
 
+  const [disablePreviousWeekButton, setDisablePreviousWeekButton] =
+    useState(false);
+
   const {
     data: constraints,
     isLoading: isLoadingConstraints,
@@ -46,7 +49,15 @@ const WeeklyConstraints = () => {
     refetchConstraints();
   }, [sunday, refetchConstraints]);
 
+  useEffect(() => {
+    if (constraints) {
+      setDisablePreviousWeekButton(false);
+    }
+  }, [constraints]);
+
   const previousWeekHandler = () => {
+    setDisablePreviousWeekButton(true);
+
     const newSundayHeaderDate = new Date(sundayHeaderDate);
     newSundayHeaderDate.setDate(newSundayHeaderDate.getDate() - 7);
     setSundayHeaderDate(newSundayHeaderDate);
@@ -84,6 +95,7 @@ const WeeklyConstraints = () => {
         <div className="weeksPaging">
           <Button
             title="שבוע קודם"
+            disabled={disablePreviousWeekButton}
             style={{ padding: "3px" }}
             onClick={previousWeekHandler}
           >
@@ -107,6 +119,7 @@ const WeeklyConstraints = () => {
             <>
               <Button
                 title="שבוע קודם"
+                disabled={disablePreviousWeekButton}
                 style={{ padding: "3px" }}
                 onClick={previousWeekHandler}
               >
@@ -156,19 +169,21 @@ const WeeklyConstraints = () => {
               const user = findUserById(constraint.employeeId);
               return (
                 <tr key={constraint._id}>
-                  <td style={{ width: "20%" }}>
+                  <td style={{ width: "250px" }}>
                     {user && (
-                      <Card style={{ minWidth: "320px" }}>
+                      <Card>
                         <Card.Body>
                           <Row>
-                            <Col md={4}>
+                            <Col xs={6}>
                               <Image
                                 src={user.image}
                                 roundedCircle
-                                width="80px"
+                                style={{ width: "80px", height: "80px" }}
                               />
                             </Col>
-                            <Col md={8} className="d-flex align-items-center">
+                          </Row>
+                          <Row className="mt-4">
+                            <Col className="d-flex align-items-center">
                               <Card.Title>{user.name}</Card.Title>
                             </Col>
                           </Row>
@@ -245,9 +260,9 @@ const WeeklyConstraints = () => {
                       </tbody>
                     </Table>
                   </td>
-                  <td style={{ width: "20%" }}>
+                  <td style={{ maxWidth: "288px" }}>
                     {constraint.noteForAdmin && (
-                      <Card style={{ minWidth: "160px" }}>
+                      <Card style={{ maxWidth: "280px" }}>
                         <Card.Body style={{ padding: "1px" }}>
                           {constraint.noteForAdmin}
                         </Card.Body>

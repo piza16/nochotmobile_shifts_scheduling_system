@@ -60,6 +60,11 @@ const Header = () => {
               <Nav.Item>
                 {userInfo ? (
                   <NavDropdown title={`שלום ${userInfo.name}`} id="username">
+                    {userInfo.canSendConstraints && (
+                      <LinkContainer to="constraints">
+                        <NavDropdown.Item>הגשת אילוצים</NavDropdown.Item>
+                      </LinkContainer>
+                    )}
                     <LinkContainer to="profile">
                       <NavDropdown.Item>פרופיל</NavDropdown.Item>
                     </LinkContainer>
@@ -79,7 +84,7 @@ const Header = () => {
               {userInfo && userInfo.isAdmin && (
                 <Nav.Item>
                   <NavDropdown title="ניהול" id="adminmenu">
-                    <LinkContainer to="/admin/userlist">
+                    <LinkContainer to="/admin/userslist">
                       <NavDropdown.Item>משתמשים</NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>

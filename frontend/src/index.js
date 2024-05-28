@@ -19,6 +19,7 @@ import HomeScreen from "./Screens/HomeScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import RegisterScreen from "./Screens/RegisterScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
+import ConstraintSubmissionScreen from "./Screens/ConstraintSubmissionScreen";
 import UserListScreen from "./Screens/admin/UserListScreen";
 import UserEditScreen from "./Screens/admin/UserEditScreen";
 import AdminHomeScreen from "./Screens/admin/AdminHomeScreen";
@@ -44,10 +45,11 @@ const router = createBrowserRouter(
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
+        <Route path="/constraints" element={<ConstraintSubmissionScreen />} />
       </Route>
       <Route element={<AdminRoute />}>
         <Route path="/admin" element={<AdminHomeScreen />} />
-        <Route path="/admin/userlist" element={<UserListScreen />} />
+        <Route path="/admin/userslist" element={<UserListScreen />} />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
       </Route>
     </Route>

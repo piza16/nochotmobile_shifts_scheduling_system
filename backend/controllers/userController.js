@@ -20,6 +20,8 @@ const authUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       image: user.image,
       isActive: user.isActive,
+      canBeScheduled: user.canBeScheduled,
+      canSendConstraints: user.canSendConstraints,
     });
   } else {
     res.status(401);
@@ -56,6 +58,8 @@ const registerUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       image: user.image,
       isActive: user.isActive,
+      canBeScheduled: user.canBeScheduled,
+      canSendConstraints: user.canSendConstraints,
     });
   } else {
     res.status(400);

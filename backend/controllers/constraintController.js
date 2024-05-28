@@ -2,16 +2,23 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import Constraint from "../models/constraintModel.js";
 import User from "../models/userModel.js";
 import { getNextWeekDates } from "../utils/nextWeekDates.js";
+import { checkWeeklyConstraintArrHasZeroOrOne } from "../utils/checkConstraintsArray.js";
 
 // @desc    Get weekly constraint for the authenticated user
 // @route   GET /api/constraints
 // @access  Private
 const getEmployeeWeeklyConstraint = asyncHandler(async (req, res) => {
   const { firstDayOfWeekDate } = req.query; // Expecting the date to be passed as a query parameter
-
+  const firstDay = new Date(firstDayOfWeekDate);
+  firstDay.setHours(0, 0, 0, 0); // Reset to midnight to match only the date part
   const constraint = await Constraint.findOne({
     employeeId: req.user._id,
-    weekDates: { $elemMatch: { $eq: new Date(firstDayOfWeekDate) } },
+    weekDates: {
+      $elemMatch: {
+        $gte: firstDay,
+        $lt: new Date(firstDay.getTime() + 24 * 60 * 60 * 1000),
+      },
+    },
   });
 
   res.status(200).json(constraint);
@@ -75,11 +82,17 @@ const updateConstraint = asyncHandler(async (req, res) => {
       res.status(401);
       throw new Error("אין הרשאה לבצע פעולה זו");
     }
-    constraint.weekDates = req.body.weekDates || constraint.weekDates;
+
     constraint.weeklyConstraintArr =
       req.body.weeklyConstraintArr || constraint.weeklyConstraintArr;
     constraint.noteForAdmin = req.body.noteForAdmin || constraint.noteForAdmin;
-    constraint.isPublished = req.body.isPublished || constraint.isPublished;
+
+    if (req.body.weeklyConstraintArr) {
+      if (!checkWeeklyConstraintArrHasZeroOrOne(req.body.weeklyConstraintArr)) {
+        res.status(400);
+        throw new Error("הנתונים שהוזנו באילוץ אינם תקינים");
+      }
+    }
 
     const updatedConstraint = await constraint.save();
     res.status(200).json(updatedConstraint);
