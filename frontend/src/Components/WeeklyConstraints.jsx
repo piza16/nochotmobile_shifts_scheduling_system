@@ -203,62 +203,68 @@ const WeeklyConstraints = () => {
                     </div>
                   </td>
                   <td>
-                    <Table
-                      striped
-                      bordered
-                      hover
-                      responsive
-                      className="table-sm my-0"
-                    >
-                      <thead>
-                        <tr>
-                          <th>ראשון</th>
-                          <th>שני</th>
-                          <th>שלישי</th>
-                          <th>רביעי</th>
-                          <th>חמישי</th>
-                          <th>שישי</th>
-                          <th>שבת</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {[0, 1, 2].map((shiftIndex) => (
-                          <tr style={{ height: "47.84px" }} key={shiftIndex}>
-                            {constraint.weeklyConstraintArr.map(
-                              (shifts, dayIndex) => (
-                                <td
-                                  style={{
-                                    width: "14.28%",
-                                    minWidth: "54.77px",
-                                  }}
-                                  key={dayIndex}
-                                >
-                                  {shifts[shiftIndex] !== undefined ? (
-                                    shifts[shiftIndex] === 0 ? (
-                                      <div className="FaCheckAndTimes">
-                                        <FaCheck style={{ color: "green" }} />
-                                      </div>
-                                    ) : shifts[shiftIndex] === 1 ? (
-                                      <div className="FaCheckAndTimes">
-                                        <FaTimes
-                                          style={{
-                                            color: "red",
-                                          }}
-                                        />
-                                      </div>
-                                    ) : (
-                                      <div className="FaCheckAndTimes">-</div>
-                                    )
-                                  ) : (
-                                    <div className="FaCheckAndTimes">-</div> // Placeholder if no shift value exists
-                                  )}
-                                </td>
-                              )
-                            )}
+                    {isLoadingConstraints ? (
+                      <Loader />
+                    ) : !constraint.isPublished && sunday === initialSunday ? (
+                      <Message>הבקר טרם הגיש אילוצים</Message>
+                    ) : (
+                      <Table
+                        striped
+                        bordered
+                        hover
+                        responsive
+                        className="table-sm my-0"
+                      >
+                        <thead>
+                          <tr>
+                            <th>ראשון</th>
+                            <th>שני</th>
+                            <th>שלישי</th>
+                            <th>רביעי</th>
+                            <th>חמישי</th>
+                            <th>שישי</th>
+                            <th>שבת</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </Table>
+                        </thead>
+                        <tbody>
+                          {[0, 1, 2].map((shiftIndex) => (
+                            <tr style={{ height: "47.84px" }} key={shiftIndex}>
+                              {constraint.weeklyConstraintArr.map(
+                                (shifts, dayIndex) => (
+                                  <td
+                                    style={{
+                                      width: "14.28%",
+                                      minWidth: "54.77px",
+                                    }}
+                                    key={dayIndex}
+                                  >
+                                    {shifts[shiftIndex] !== undefined ? (
+                                      shifts[shiftIndex] === 0 ? (
+                                        <div className="FaCheckAndTimes">
+                                          <FaCheck style={{ color: "green" }} />
+                                        </div>
+                                      ) : shifts[shiftIndex] === 1 ? (
+                                        <div className="FaCheckAndTimes">
+                                          <FaTimes
+                                            style={{
+                                              color: "red",
+                                            }}
+                                          />
+                                        </div>
+                                      ) : (
+                                        <div className="FaCheckAndTimes">-</div>
+                                      )
+                                    ) : (
+                                      <div className="FaCheckAndTimes">-</div> // Placeholder if no shift value exists
+                                    )}
+                                  </td>
+                                )
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    )}
                   </td>
                   <td style={{ maxWidth: "288px" }}>
                     {constraint.noteForAdmin && (

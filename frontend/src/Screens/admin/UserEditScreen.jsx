@@ -21,6 +21,8 @@ const UserEditScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [canSendConstraints, setCanSendConstraints] = useState(false);
+  const [canBeScheduled, setCanBeScheduled] = useState(false);
 
   const {
     data: user,
@@ -42,6 +44,8 @@ const UserEditScreen = () => {
       setEmail(user.email);
       setIsAdmin(user.isAdmin);
       setImage(user.image);
+      setCanSendConstraints(user.canSendConstraints);
+      setCanBeScheduled(user.canBeScheduled);
     }
   }, [user]);
 
@@ -168,12 +172,40 @@ const UserEditScreen = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-              <Form.Group controlId="isAdmin" className="my-2">
+              <Form.Group
+                controlId="isAdmin"
+                className="my-3"
+                style={{ paddingInlineEnd: "40rex" }}
+              >
                 <Form.Check
                   type="checkbox"
                   label="האם מנהל?"
                   checked={isAdmin}
                   onChange={(e) => setIsAdmin(e.target.checked)}
+                ></Form.Check>
+              </Form.Group>
+              <Form.Group
+                controlId="isAdmin"
+                className="my-3"
+                style={{ paddingInlineEnd: "27rex" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  label="האם יכול לשלוח אילוצים?"
+                  checked={canSendConstraints}
+                  onChange={(e) => setCanSendConstraints(e.target.checked)}
+                ></Form.Check>
+              </Form.Group>
+              <Form.Group
+                controlId="isAdmin"
+                className="my-3"
+                style={{ paddingInlineEnd: "18rex" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  label="האם יכול להשתבץ לסידור העבודה?"
+                  checked={canBeScheduled}
+                  onChange={(e) => setCanBeScheduled(e.target.checked)}
                 ></Form.Check>
               </Form.Group>
               <Button type="submit" variant="primary" className="my-2">

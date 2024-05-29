@@ -4,7 +4,7 @@ import {
   useUpdateConstraintMutation,
 } from "../slices/constraintsApiSlice";
 import { getNextWeekStart } from "../utils/nextWeekSunday";
-import { Table, Row, Col, Card, Container, Button } from "react-bootstrap";
+import { Table, Card, Container, Button } from "react-bootstrap";
 import { FaTimes, FaCheck } from "react-icons/fa";
 import { FaAnglesRight, FaAnglesLeft } from "react-icons/fa6";
 import Loader from "../Components/Loader";
@@ -234,6 +234,7 @@ const ConstraintSubmissionScreen = () => {
                               {shifts[shiftIndex] !== undefined ? (
                                 <Button
                                   className="FaCheckAndTimes"
+                                  disabled={data.changeabilityExpired}
                                   onClick={() =>
                                     toggleConstraint(dayIndex, shiftIndex)
                                   }
@@ -270,8 +271,13 @@ const ConstraintSubmissionScreen = () => {
                 <textarea
                   maxlength="120"
                   style={{ width: "100%", height: "100%", resize: "none" }}
-                  placeholder="הכנס הערות נוספות כאן... (עד 120 תווים)"
+                  placeholder={
+                    data.changeabilityExpired
+                      ? `לא הכנסו הערות למנהל`
+                      : `הכנס הערות נוספות כאן... (עד 120 תווים)`
+                  }
                   value={noteToAdmin}
+                  readOnly={data.changeabilityExpired}
                   onChange={(e) => setNoteToAdmin(e.target.value)}
                 ></textarea>
               </Card.Text>
@@ -280,11 +286,16 @@ const ConstraintSubmissionScreen = () => {
           <Button
             variant="primary"
             onClick={handleSubmit}
-            disabled={loadingUpdateConstraint}
+            disabled={loadingUpdateConstraint || data.changeabilityExpired}
           >
             {loadingUpdateConstraint ? "מעדכן..." : "הגש אילוצים"}
           </Button>
           {loadingUpdateConstraint && <Loader />}
+          {data.changeabilityExpired && sunday === initialSunday && (
+            <div style={{ marginTop: "15px", width: "250px" }}>
+              <Message variant="danger">תם מועד הגשת האילוצים</Message>
+            </div>
+          )}
         </>
       )}
     </Container>

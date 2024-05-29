@@ -71,6 +71,32 @@ const createNextWeekConstraints = async () => {
   }
 };
 
+// @desc    Disable constraints changeability for all constraints of next week
+// @route   No Route
+// @access  Time entity once a week on Thursday at 00:00
+const disableConstraintsChangeability = async () => {
+  try {
+    const nextWeekDates = getNextWeekDates();
+    const constraints = await Constraint.find({
+      weekDates: {
+        $elemMatch: {
+          $gte: nextWeekDates[0],
+          $lt: new Date(nextWeekDates[0].getTime() + 24 * 60 * 60 * 1000),
+        },
+      },
+    });
+
+    for (const constraint of constraints) {
+      constraint.changeabilityExpired = true;
+      constraint.isPublished = true;
+      await constraint.save();
+    }
+    console.log("Constraints changeability disabled for all constraints");
+  } catch (error) {
+    console.error("Error disabling constraints changeability:", error);
+  }
+};
+
 // @desc    Update constraints
 // @route   PUT /api/constraints/:id
 // @access  Private
@@ -94,6 +120,7 @@ const updateConstraint = asyncHandler(async (req, res) => {
       }
     }
 
+    constraint.isPublished = true;
     const updatedConstraint = await constraint.save();
     res.status(200).json(updatedConstraint);
   } else {
@@ -106,5 +133,6 @@ export {
   getEmployeeWeeklyConstraint,
   getAllEmployeesWeeklyConstraint,
   createNextWeekConstraints,
+  disableConstraintsChangeability,
   updateConstraint,
 };

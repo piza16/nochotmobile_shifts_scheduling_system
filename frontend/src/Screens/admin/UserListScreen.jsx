@@ -1,5 +1,5 @@
 import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button, Card } from "react-bootstrap";
+import { Table, Button, Card, Image } from "react-bootstrap";
 import { FcApprove } from "react-icons/fc";
 import { FaTimes, FaTrash, FaEdit, FaCheck } from "react-icons/fa";
 import Message from "../../Components/Message";
@@ -66,18 +66,30 @@ const UserListScreen = () => {
           <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
-                <th>מזהה משתמש</th>
+                <th>תמונת פרופיל</th>
                 <th>שם</th>
                 <th>דוא"ל</th>
                 <th>מנהל</th>
-                <th>משתמש פעיל</th>
+                <th>פעיל</th>
+                <th title="במידה ויסומן כלא פעיל - לעובד מרגע זה אין יותר גישה לעמוד הגשת האילוצים ובין יום שבת הקרוב ליום ראשון ב12 בלילה לא יווצר לעובד לוח הגשת אילוצים לשבוע שלאחריו.">
+                  יכול להגיש אילוצים
+                  <span style={{ color: "red", fontWeight: "bolder" }}>*</span>
+                </th>
+                <th>יכול להשתבץ לסידור</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
                 <tr key={user._id}>
-                  <td>{user._id}</td>
+                  <td>
+                    {" "}
+                    <Image
+                      src={user.image}
+                      roundedCircle={true}
+                      style={{ height: "70px", width: "70px" }}
+                    />
+                  </td>
                   <td>{user.name}</td>
                   <td>
                     <a href={`mailto:${user.email}`}>{user.email}</a>
@@ -91,6 +103,20 @@ const UserListScreen = () => {
                   </td>
                   <td>
                     {user.isActive ? (
+                      <FaCheck style={{ color: "green" }} />
+                    ) : (
+                      <FaTimes style={{ color: "red" }} />
+                    )}
+                  </td>
+                  <td>
+                    {user.canSendConstraints ? (
+                      <FaCheck style={{ color: "green" }} />
+                    ) : (
+                      <FaTimes style={{ color: "red" }} />
+                    )}
+                  </td>
+                  <td>
+                    {user.canBeScheduled ? (
                       <FaCheck style={{ color: "green" }} />
                     ) : (
                       <FaTimes style={{ color: "red" }} />
