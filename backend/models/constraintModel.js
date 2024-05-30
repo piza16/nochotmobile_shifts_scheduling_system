@@ -26,6 +26,10 @@ const constraintSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isExtended: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

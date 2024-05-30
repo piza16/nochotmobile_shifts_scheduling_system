@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { useGetAllEmployeesWeeklyConstraintsQuery } from "../slices/constraintsApiSlice";
+import {
+  useGetAllEmployeesWeeklyConstraintsQuery,
+  useUpdateConstraintMutation,
+} from "../slices/constraintsApiSlice";
 import { getNextWeekStart } from "../utils/nextWeekSunday";
 import {
   Table,
@@ -45,6 +48,9 @@ const WeeklyConstraints = () => {
     error: errorUsers,
   } = useGetUsersQuery();
 
+  const [updateConstraint, { isLoading: loadingUpdateConstraint }] =
+    useUpdateConstraintMutation();
+
   useEffect(() => {
     refetchConstraints();
   }, [sunday, refetchConstraints]);
@@ -85,6 +91,29 @@ const WeeklyConstraints = () => {
     const previousSunday = new Date(currentDate);
     previousSunday.setDate(currentDate.getDate() + 7);
     setSunday(previousSunday.toISOString());
+  };
+
+  const getCurrentWeekMidnightThursday = () => {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const daysUntilThursday = 4 - currentDay;
+    const midnightThursday = new Date(currentDate);
+    midnightThursday.setDate(currentDate.getDate() + daysUntilThursday);
+    midnightThursday.setHours(0, 0, 0, 0); // Set to midnight
+    return midnightThursday;
+  };
+
+  const extendChangeabilityExpired = async (constraintId) => {
+    try {
+      const res = await updateConstraint({
+        id: constraintId,
+        data: { changeabilityExpired: false },
+      });
+      if (res.error) throw res.error;
+      refetchConstraints();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const findUserById = (id) => users?.find((user) => user._id === id);
@@ -196,7 +225,27 @@ const WeeklyConstraints = () => {
                       className="table-cell-flex"
                       style={{ fontWeight: "bold" }}
                     >
-                      <span></span>
+                      <span>
+                        {loadingUpdateConstraint ? (
+                          <Loader />
+                        ) : (
+                          constraint.changeabilityExpired &&
+                          sunday === initialSunday &&
+                          getCurrentWeekMidnightThursday() > new Date() && (
+                            <Button
+                              xs={4}
+                              title="הארכת תוקף הגשת האילוצים עד יום רביעי בלילה"
+                              variant="danger"
+                              className="btn-sm"
+                              onClick={() =>
+                                extendChangeabilityExpired(constraint._id)
+                              }
+                            >
+                              הארכה
+                            </Button>
+                          )
+                        )}
+                      </span>
                       <div>בוקר</div>
                       <div>ערב</div>
                       <div>לילה</div>

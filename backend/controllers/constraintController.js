@@ -103,8 +103,11 @@ const disableConstraintsChangeability = async () => {
 const updateConstraint = asyncHandler(async (req, res) => {
   const constraint = await Constraint.findById(req.params.id);
 
-  if (constraint && !constraint.changeabilityExpired) {
-    if (constraint.employeeId.toString() !== req.user._id.toString()) {
+  if (constraint && (!constraint.changeabilityExpired || req.user.isAdmin)) {
+    if (
+      constraint.employeeId.toString() !== req.user._id.toString() &&
+      !req.user.isAdmin
+    ) {
       res.status(401);
       throw new Error("אין הרשאה לבצע פעולה זו");
     }
@@ -119,8 +122,14 @@ const updateConstraint = asyncHandler(async (req, res) => {
         throw new Error("הנתונים שהוזנו באילוץ אינם תקינים");
       }
     }
-
     constraint.isPublished = true;
+
+    if (req.body.changeabilityExpired === false) {
+      // Admin can extend the changeability period for a constraint by max 1 day
+      constraint.isPublished = false;
+      constraint.changeabilityExpired = false;
+      constraint.isExtended = true;
+    }
     const updatedConstraint = await constraint.save();
     res.status(200).json(updatedConstraint);
   } else {

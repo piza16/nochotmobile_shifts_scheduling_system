@@ -1,5 +1,6 @@
-export const getNextWeekStart = () => {
-  const currentDate = new Date();
+export const getNextWeekStart = (date) => {
+  const currentDate = date ? new Date(date) : new Date();
+
   const currentDay = currentDate.getDay();
   const daysUntilNextSunday = 7 - currentDay;
   const nextSunday = new Date(currentDate);

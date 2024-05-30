@@ -17,6 +17,16 @@ const scheduleJobs = () => {
     }
   );
   cron.schedule(
+    "0 0 * * 3",
+    async () => {
+      await disableConstraintsChangeability();
+    },
+    {
+      scheduled: true,
+      timezone: "Asia/Jerusalem",
+    }
+  );
+  cron.schedule(
     "0 0 * * 4",
     async () => {
       await disableConstraintsChangeability();

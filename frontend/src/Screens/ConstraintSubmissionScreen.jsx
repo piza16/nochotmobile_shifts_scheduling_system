@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   useGetWeeklyConstraintQuery,
   useUpdateConstraintMutation,
@@ -12,6 +13,17 @@ import Message from "../Components/Message";
 import { toast } from "react-toastify";
 
 const ConstraintSubmissionScreen = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const createdAtDate = new Date(userInfo.createdAt);
+  const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+  const createdDateMinusOneWeek = new Date(
+    createdAtDate.getTime() - oneWeekInMilliseconds
+  );
+  const sundayOfRegistrationWeek = new Date(
+    getNextWeekStart(createdDateMinusOneWeek)
+  ).toLocaleDateString();
+
   const initialSunday = getNextWeekStart();
   const [sunday, setSunday] = useState(initialSunday);
 
@@ -39,12 +51,14 @@ const ConstraintSubmissionScreen = () => {
   }, [sunday, refetch]);
 
   useEffect(() => {
-    if (data) {
+    if (sundayHeaderDate.toLocaleDateString() !== sundayOfRegistrationWeek) {
       setDisablePreviousWeekButton(false);
+    }
+    if (data) {
       setConstraintsArr(data.weeklyConstraintArr);
       setNoteToAdmin(data.noteForAdmin);
     }
-  }, [data]);
+  }, [data, sundayHeaderDate, sundayOfRegistrationWeek]);
 
   const previousWeekHandler = () => {
     setDisablePreviousWeekButton(true);
@@ -136,7 +150,8 @@ const ConstraintSubmissionScreen = () => {
         <div className="weeksPaging">
           {isLoading ? (
             <Loader />
-          ) : !data ? (
+          ) : sundayHeaderDate.toLocaleDateString() ===
+            sundayOfRegistrationWeek ? (
             <h3 className="mb-1 mx-2">
               {sundayHeaderDate.toLocaleDateString() +
                 " - " +
@@ -181,6 +196,24 @@ const ConstraintSubmissionScreen = () => {
         <Message variant="danger">אין אילוצים להצגה עבור תאריכים אלו</Message>
       ) : (
         <>
+          {data.changeabilityExpired && sunday === initialSunday && (
+            <div style={{ width: "430px" }}>
+              <Message>
+                הגשת אילוצים לעוד שבועיים תתאפשר ביום ראשון בבוקר
+              </Message>
+            </div>
+          )}
+          {!data.changeabilityExpired && sunday === initialSunday && (
+            <div style={{ width: "520px" }}>
+              {data.isExtended ? (
+                <Message>
+                  ניתן לשנות את האילוצים עד יום רביעי בלילה לאחר הארכה מהמנהל
+                </Message>
+              ) : (
+                <Message>ניתן לשנות את האילוצים עד יום שלישי בלילה</Message>
+              )}
+            </div>
+          )}
           <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
@@ -292,7 +325,7 @@ const ConstraintSubmissionScreen = () => {
           </Button>
           {loadingUpdateConstraint && <Loader />}
           {data.changeabilityExpired && sunday === initialSunday && (
-            <div style={{ marginTop: "15px", width: "250px" }}>
+            <div style={{ marginTop: "15px", width: "220px" }}>
               <Message variant="danger">תם מועד הגשת האילוצים</Message>
             </div>
           )}

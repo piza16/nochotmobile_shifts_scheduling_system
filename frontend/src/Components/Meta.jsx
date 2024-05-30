@@ -12,7 +12,7 @@ const Meta = ({ title, description, keyword }) => {
 
 Meta.defaultProps = {
   title: "משמרות | NOC Shifts",
-  description: "מערכת ניהול משמשות של בקרת הוט מובייל",
+  description: "מערכת ניהול משמרות של בקרה",
   keyword: "",
 };
 

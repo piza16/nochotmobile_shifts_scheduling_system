@@ -22,6 +22,7 @@ const authUser = asyncHandler(async (req, res) => {
       isActive: user.isActive,
       canBeScheduled: user.canBeScheduled,
       canSendConstraints: user.canSendConstraints,
+      createdAt: user.createdAt,
     });
   } else {
     res.status(401);
@@ -60,6 +61,7 @@ const registerUser = asyncHandler(async (req, res) => {
       isActive: user.isActive,
       canBeScheduled: user.canBeScheduled,
       canSendConstraints: user.canSendConstraints,
+      createdAt: user.createdAt,
     });
   } else {
     res.status(400);

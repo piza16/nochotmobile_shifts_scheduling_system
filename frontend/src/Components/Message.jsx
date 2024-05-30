@@ -1,7 +1,14 @@
 import { Alert } from "react-bootstrap";
 
 const Message = ({ variant, children }) => {
-  return <Alert variant={variant}>{children}</Alert>;
+  return (
+    <Alert
+      style={{ paddingTop: "10px", paddingBottom: "10px" }}
+      variant={variant}
+    >
+      {children}
+    </Alert>
+  );
 };
 
 Message.defaultProps = {
