@@ -15,7 +15,7 @@ const App = () => {
 
   const videoRef = useRef();
   const setPlayBack = () => {
-    videoRef.current.playbackRate = 0.8;
+    videoRef.current.playbackRate = 1;
   };
 
   return (

@@ -8909,9 +8909,9 @@ fieldset:disabled .btn {
 
 .bg-dark {
   --bs-bg-opacity: 1;
-  background: linear-gradient(217deg, rgba(243, 63, 171,1), rgba(255,0,0,0.5) 20.71%),
-  linear-gradient(127deg, rgba(255, 0, 0,1), rgba(114, 247, 114, 0.5) 90.71%),
-  linear-gradient(336deg, rgba(163, 162, 162, 1), rgba(0,0,255,0.5) 75.71%) !important;
+  background: linear-gradient(217deg, rgb(201, 172, 190), rgba(64, 43, 43, 0.5) 20.71%),
+  linear-gradient(127deg, rgb(228, 78, 78), rgba(182, 53, 53, 0.5) 90.71%),
+  linear-gradient(336deg, rgba(163, 162, 162, 1), rgba(2, 247, 255, 0.5) 75.71%) !important;
 }
 
 /* .bg-dark {

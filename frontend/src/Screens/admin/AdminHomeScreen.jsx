@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import Message from "../../Components/Message";
-import WeeklyConstraints from "../../Components/WeeklyConstraints";
 
 const AdminHomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -10,7 +9,7 @@ const AdminHomeScreen = () => {
       {!userInfo.isActive ? (
         <Message>אנא בקש ממנהל הבקרה לאשר אותך</Message>
       ) : (
-        <WeeklyConstraints />
+        <div>סידור עבודה</div>
       )}
     </>
   );

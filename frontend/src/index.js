@@ -22,6 +22,7 @@ import ProfileScreen from "./Screens/ProfileScreen";
 import ConstraintSubmissionScreen from "./Screens/ConstraintSubmissionScreen";
 import UserListScreen from "./Screens/admin/UserListScreen";
 import UserEditScreen from "./Screens/admin/UserEditScreen";
+import ConstraintsScreen from "./Screens/admin/ConstraintsScreen";
 import AdminHomeScreen from "./Screens/admin/AdminHomeScreen";
 
 const router = createBrowserRouter(
@@ -49,6 +50,7 @@ const router = createBrowserRouter(
       </Route>
       <Route element={<AdminRoute />}>
         <Route path="/admin" element={<AdminHomeScreen />} />
+        <Route path="/admin/constraints" element={<ConstraintsScreen />} />
         <Route path="/admin/userslist" element={<UserListScreen />} />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
       </Route>
