@@ -70,7 +70,7 @@ const UserEditScreen = () => {
           toastId: "toastSuccess2",
         });
         refetch();
-        navigate("/admin/userlist");
+        navigate("/admin/userslist");
       } catch (err) {
         toast.error(err?.data?.message || err?.error || "שגיאה בעדכון משתמש", {
           toastId: "toastError2",
@@ -101,7 +101,7 @@ const UserEditScreen = () => {
   return (
     <>
       <Meta title={"עריכת משתמש | NOC Shift"} />
-      <Link to="/admin/userlist" className="btn btn-light my-3">
+      <Link to="/admin/userslist" className="btn btn-light my-3">
         חזרה למשתמשים
       </Link>
       <FormContainer>
